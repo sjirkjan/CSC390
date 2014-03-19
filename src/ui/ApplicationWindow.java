@@ -10,6 +10,5 @@ public class ApplicationWindow
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Analysis");
 		frame.setVisible(true);
-		
 	}
 }

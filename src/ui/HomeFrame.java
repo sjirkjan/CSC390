@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-import org.apache.derby.impl.tools.dblook.DB_Alias;
 
 import db.DBBuilder;
 
@@ -62,15 +61,17 @@ public class HomeFrame extends JFrame
 		createListTabPanel();
 
 		setSize(FRAME_WIDTH,FRAME_HEIGHT);
+		
+		
 	}
 
 	private void createListTabPanel()
 	{
 		
-		TabPanel tab = new TabPanel();
+		/*TabPanel tab = new TabPanel();
 		tab.setVisible(true);
-		add(tab,BorderLayout.EAST);
-/*		tabPane = new JTabbedPane();
+		add(tab,BorderLayout.EAST);*/
+		tabPane = new JTabbedPane();
 		
 		
 		JComponent donorTab = createDonorList();
@@ -84,8 +85,31 @@ public class HomeFrame extends JFrame
 		
 		JComponent donationTab = createDonationList();
 		tabPane.addTab("Donation", donationTab);
-		add(tabPane, BorderLayout.CENTER);*/
+		add(tabPane, BorderLayout.CENTER);
 	}
+	private void updateListPanel()
+	{
+		tabPane.removeAll();
+
+		tabPane = new JTabbedPane();
+		
+		JComponent donorTab = createDonorList();
+		tabPane.addTab("Donor", donorTab);
+		
+		missionaryTab = createMissionaryList();
+		tabPane.addTab("Missionary", missionaryTab);
+		
+		JComponent relationTab = createRelationList();
+		tabPane.addTab("Relation", relationTab);
+		
+		JComponent donationTab = createDonationList();
+		tabPane.addTab("Donation", donationTab);
+		tabPane.setVisible(true);
+		
+		add(tabPane, BorderLayout.CENTER);
+	}
+	
+	
 	private JList<Donor> createDonorList()
 	{
 		ArrayList<Donor> donorTable =database.makeDonorTable();
@@ -177,7 +201,11 @@ public class HomeFrame extends JFrame
 		class AddDonorListener implements ActionListener
 		{
 			public void actionPerformed(ActionEvent event) 
-			{	// TODO Auto-generated method stub
+			{	
+				String donorName = JOptionPane.showInputDialog(null, "", "Donor Name");
+				database.addDonor(donorName); 
+				Donor donor = database.getDonor(donorName);
+				donorListModel.addElement(donor);
 			}
 		}
 		ActionListener listener = new AddDonorListener();
@@ -192,7 +220,9 @@ public class HomeFrame extends JFrame
 			public void actionPerformed(ActionEvent event)
 			{	
 				String missionary_name = JOptionPane.showInputDialog(null, "", "Missionary Name");
-				database.addMissionary(missionary_name); // This doesn't add it to the tab.
+				database.addMissionary(missionary_name); 
+				Missionary missionary = database.getMissionary(missionary_name);
+				missionaryListModel.addElement(missionary);
 			}
 		}
 		ActionListener listener = new AddMissionaryListener();
@@ -205,7 +235,15 @@ public class HomeFrame extends JFrame
 		class AddRelationListener implements ActionListener
 		{
 			public void actionPerformed(ActionEvent event)
-			{	// TODO Auto-generated method stub
+			{	
+				JFrame frame = new JFrame("Add Relation");
+				
+				frame.add(new JTextField());
+				frame.add(new JTextField());
+				
+				String donor_name = null;
+				String missionary_name = null;
+				database.addRelation(donor_name, missionary_name);
 			}
 		}
 		ActionListener listener = new AddRelationListener();
