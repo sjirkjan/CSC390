@@ -88,8 +88,8 @@ public class HomeFrame extends JFrame
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.weightx = 0.5;
-		c.gridx = 0;
 		
+		c.gridx = 0;
 		c.gridy = 0;
 		panel.add(new JLabel("Donor"),c);
 		
@@ -162,8 +162,13 @@ public class HomeFrame extends JFrame
 
 	private void createControlPanel() 
 	{
-		controlPanel = new JPanel();
-		controlPanel.setLayout(new GridLayout(8,1));
+		controlPanel = new JPanel(new GridBagLayout());
+		
+		GridBagConstraints c = new GridBagConstraints();
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.5;
+		
 		
 		createAddDonorButton();
 		createAddMissionaryButton();
@@ -172,15 +177,44 @@ public class HomeFrame extends JFrame
 		createDeleteDonorButton();
 		createDeleteMissionaryButton();
 		createDeleteDonationButton();
+
+		donorNameField = new JTextField(30);
+		missionaryNameField = new JTextField(30);
+		donationAmountField = new JTextField(30);
+		donationDateField = new JTextField(10);
 		
-		donorNameField = new JTextField();
-		controlPanel.add(donorNameField);
-		controlPanel.add(addDonorButton);
-		controlPanel.add(addMissionaryButton);
-		controlPanel.add(addDonationButton);
-		controlPanel.add(deleteDonorButton);
-		controlPanel.add(deleteMissionaryButton);
-		controlPanel.add(deleteDonationButton);
+		c.gridx = 0;
+		c.gridy = 0;
+		controlPanel.add(new JLabel("New Donor Name:"),c);
+		c.gridy = 1;
+		controlPanel.add(donorNameField, c);
+		c.gridy = 2;
+		controlPanel.add(addDonorButton, c);
+		
+		c.gridy = 3;
+		controlPanel.add(new JLabel("New Missionary Name:"),c);
+		c.gridy = 4;
+		controlPanel.add(missionaryNameField, c);
+		c.gridy = 5;
+		controlPanel.add(addMissionaryButton, c);
+		
+		c.gridy = 6;
+		controlPanel.add(new JLabel("Donation Amount"),c);
+		c.gridy = 7;
+		controlPanel.add(donationAmountField, c);
+		c.gridy = 8;
+		controlPanel.add(new JLabel("Date (dd-mm-yyyy)"),c);
+		c.gridy = 9;
+		controlPanel.add(donationDateField, c);
+		c.gridy = 10;
+		controlPanel.add(addDonationButton, c);
+
+		c.gridy = 11;
+		controlPanel.add(deleteDonorButton, c);
+		c.gridy = 12;
+		controlPanel.add(deleteMissionaryButton, c);
+		c.gridy = 13;
+		controlPanel.add(deleteDonationButton, c);
 		add(controlPanel, BorderLayout.WEST);
 	}
 
@@ -189,12 +223,16 @@ public class HomeFrame extends JFrame
 		addDonorButton = new JButton("Add new donor");
 		class AddDonorListener implements ActionListener
 		{
-			public void actionPerformed(ActionEvent event) 
+			public void actionPerformed(ActionEvent event)
 			{	
-				String donorName = JOptionPane.showInputDialog(null, "", "Donor Name");
-				database.addDonor(donorName); 
-				Donor donor = database.getDonor(donorName);
-				donorListModel.addElement(donor);
+				String donorName = donorNameField.getText();
+				if(donorName.length() > 0)
+				{
+					database.addDonor(donorName);
+					Donor donor = database.getDonor(donorName);
+					donorListModel.addElement(donor);
+					donorNameField.setText("");
+				}
 			}
 		}
 		ActionListener listener = new AddDonorListener();
@@ -207,15 +245,13 @@ public class HomeFrame extends JFrame
 		{
 			public void actionPerformed(ActionEvent event)
 			{	
-				NewMissionaryFrame frame = new NewMissionaryFrame();
-				frame.setVisible(true);
-				
-				String name = frame.getNewMissionaryName();
-				if(name != null)
+				String missionaryName = missionaryNameField.getText();
+				if(missionaryName.length() > 0)
 				{
-					database.addMissionary(name);
-					Missionary missionary = database.getMissionary(name);
+					database.addMissionary(missionaryName);
+					Missionary missionary = database.getMissionary(missionaryName);
 					missionaryListModel.addElement(missionary);
+					missionaryNameField.setText("");
 				}
 			}
 		}
@@ -228,7 +264,24 @@ public class HomeFrame extends JFrame
 		class AddDonationListener implements ActionListener
 		{
 			public void actionPerformed(ActionEvent event)
-			{	// TODO Auto-generated method stub
+			{	
+				int donor_index = donorList.getSelectedIndex();
+				int missionary_index = missionaryList.getSelectedIndex();
+				
+				int donor_id = donorListModel.get(donor_index).getDonorID();
+				int missionary_id = missionaryListModel.get(missionary_index).getMissionaryID();
+				
+				double amount = Double.parseDouble(donationAmountField.getText());
+				Date date = Date.stringToDate(donationDateField.getText());
+				
+				if(amount > 0)
+				{
+					database.addDonation(amount, donor_id, missionary_id, date);
+					Donation donation = database.getDonation(amount, donor_id, missionary_id, date);
+					donationListModel.addElement(donation);
+					donationAmountField.setText("");
+					donationDateField.setText("");
+				}
 			}
 		}
 		ActionListener listener = new AddDonationListener();
@@ -241,7 +294,10 @@ public class HomeFrame extends JFrame
 		class DeleteDonorListener implements ActionListener
 		{
 			public void actionPerformed(ActionEvent event)
-			{	// TODO Auto-generated method stub
+			{	
+				int index = donorList.getSelectedIndex();
+				database.removeDonor(donorListModel.get(index).getDonorName());
+				donorListModel.remove(index);
 			}
 		}
 		ActionListener listener = new DeleteDonorListener();
@@ -254,8 +310,9 @@ public class HomeFrame extends JFrame
 		{
 			public void actionPerformed(ActionEvent event)
 			{
-				// TODO Auto-generated method stub
-			}
+				int index = missionaryList.getSelectedIndex();
+				database.removeMissionary(missionaryListModel.get(index).getMissionaryName());
+				missionaryListModel.remove(index);			}
 		}
 		ActionListener listener = new DeleteMissionaryListener();
 		deleteMissionaryButton.addActionListener(listener);

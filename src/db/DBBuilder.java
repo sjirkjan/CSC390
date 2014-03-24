@@ -234,6 +234,29 @@ public class DBBuilder{
 		 for(Donation i:donations)
 			 System.out.println(i.toString());
 	 }
+	 public Donation getDonation(double amount, int d_id, int m_id, Date date)
+	 {
+		 Donation donation;
+		 int donation_id = 0;
+		 try
+		 {
+			 s = conn.createStatement();
+			 rs= s.executeQuery(	"SELECT * FROM donation " +
+			 						"WHERE donor_id = " + d_id + 
+			 						" AND  missionary_id = " + m_id +
+			 						" AND donation_date = \'" + date.toString() +
+			 						"\' AND amount = " + amount);
+			 rs.next();
+			 donation_id = rs.getInt("donation_id");
+		 }catch(SQLException sqle)
+		 {
+			 printSQLException(sqle);
+		 }
+		 
+		 donation = new Donation(donation_id, d_id, m_id, amount, date);
+		 return donation;
+		 
+	 }
 
 	 public void addDonor(String name)
 	 {
