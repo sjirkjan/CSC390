@@ -20,12 +20,6 @@ public class DonorData {
  		db.printDonorTable();
  		db.printMissionaryTable();
  		db.printDonationTable();
- 		db.printRelationTable();
-// 		db.removeDonation(150);
-// 		donorAllContributionsTable(" Dorinda Dave");
-//		donor_missionaryContributionTable("Tianna Toribio","Angelo Albarado");
-// 		donor_missionaryContributionTable(" Dorinda Dave","Isreal Inabinet");
-// 		donor_missionaryContributionTable(" Dorinda Dave","Jolie Jin");
  		db.disconnect();
  	}
  	

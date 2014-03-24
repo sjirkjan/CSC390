@@ -1,6 +1,8 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +17,6 @@ import entities.Date;
 import entities.Donation;
 import entities.Donor;
 import entities.Missionary;
-import entities.Relation;
 
 @SuppressWarnings("serial")
 public class HomeFrame extends JFrame 
@@ -27,25 +28,30 @@ public class HomeFrame extends JFrame
 	
 	JComponent mainMenu;
 	
+	JTextField donorNameField;
 	JButton addDonorButton;
+	JTextField missionaryNameField;
 	JButton addMissionaryButton;
-	JButton addRelationButton;
+	
+	JTextField donationAmountField;
+	JTextField donationDateField;
 	JButton addDonationButton;
 
 	JButton deleteDonorButton;
 	JButton deleteMissionaryButton;
-	JButton deleteRelationButton;
 	JButton deleteDonationButton;
-	JPanel panel;
+	JPanel controlPanel;
+	JPanel topPanel;
+	JPanel listPanel;
 	
 	JTabbedPane tabPane;
+	JComponent donorTab;
 	JComponent missionaryTab;
+	JComponent donationTab;
 	DefaultListModel<Donor> donorListModel;
 	JList<Donor> donorList;
 	DefaultListModel<Missionary> missionaryListModel;
 	JList<Missionary> missionaryList;
-	DefaultListModel<Relation> relationListModel;
-	JList<Relation> relationList;
 	DefaultListModel<Donation> donationListModel;
 	JList<Donation> donationList;
 	
@@ -58,58 +64,58 @@ public class HomeFrame extends JFrame
 		
 		createControlPanel();
 		
-		createListTabPanel();
+		createListPanel();
 
 		setSize(FRAME_WIDTH,FRAME_HEIGHT);
 		
 		
 	}
 
-	private void createListTabPanel()
+	private void createListPanel()
 	{
-		
-		/*TabPanel tab = new TabPanel();
-		tab.setVisible(true);
-		add(tab,BorderLayout.EAST);*/
-		tabPane = new JTabbedPane();
-		
-		
-		JComponent donorTab = createDonorList();
-		tabPane.addTab("Donor", donorTab);
-		
+		JPanel panel = new JPanel();
+		panel.setSize(100,600);
+		donorTab = createDonorList();
 		missionaryTab = createMissionaryList();
-		tabPane.addTab("Missionary", missionaryTab);
+		donationTab = createDonationList();
 		
-		JComponent relationTab = createRelationList();
-		tabPane.addTab("Relation", relationTab);
+		JScrollPane donorPane = new JScrollPane(donorTab); 
+		JScrollPane missionaryPane = new JScrollPane(missionaryTab);
+		JScrollPane donationPane = new JScrollPane(donationTab);
 		
-		JComponent donationTab = createDonationList();
-		tabPane.addTab("Donation", donationTab);
-		add(tabPane, BorderLayout.CENTER);
-	}
-	private void updateListPanel()
-	{
-		tabPane.removeAll();
+		panel = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.5;
+		c.gridx = 0;
+		
+		c.gridy = 0;
+		panel.add(new JLabel("Donor"),c);
+		
+		c.gridx = 1;
+		panel.add(new JLabel("Missionary"),c);
+		
+		c.gridx = 2;
+		panel.add(new JLabel("Donations"),c);
+		
+		c.ipady = 450;
+		c.gridy = 1;
 
-		tabPane = new JTabbedPane();
 		
-		JComponent donorTab = createDonorList();
-		tabPane.addTab("Donor", donorTab);
+		c.gridx = 0;
+		panel.add(donorPane, c);
 		
-		missionaryTab = createMissionaryList();
-		tabPane.addTab("Missionary", missionaryTab);
+		c.gridx = 1;
+		panel.add(missionaryPane, c);
 		
-		JComponent relationTab = createRelationList();
-		tabPane.addTab("Relation", relationTab);
+		c.gridx = 2;
+		panel.add(donationPane, c);
 		
-		JComponent donationTab = createDonationList();
-		tabPane.addTab("Donation", donationTab);
-		tabPane.setVisible(true);
+		add(panel,BorderLayout.CENTER);
 		
-		add(tabPane, BorderLayout.CENTER);
 	}
-	
-	
+
 	private JList<Donor> createDonorList()
 	{
 		ArrayList<Donor> donorTable =database.makeDonorTable();
@@ -139,21 +145,6 @@ public class HomeFrame extends JFrame
 		add(missionaryList, BorderLayout.CENTER);
 		return missionaryList;
 	}
-	private JList<Relation> createRelationList()
-	{
-		ArrayList<Relation> relationTable =database.makeRelationTable();
-		relationListModel = new DefaultListModel<Relation>(); 
-		for(Relation i : relationTable)
-			relationListModel.addElement(i);
-		
-		relationList=new JList<Relation>(relationListModel);
-
-		relationList.setVisible(true);
-		relationList.setSelectedIndex(0);
-
-		add(relationList, BorderLayout.CENTER);
-		return relationList;
-	}
 	private JList<Donation> createDonationList()
 	{
 		ArrayList<Donation> donationTable =database.makeDonationTable();
@@ -171,28 +162,26 @@ public class HomeFrame extends JFrame
 
 	private void createControlPanel() 
 	{
-		panel = new JPanel();
-		panel.setLayout(new GridLayout(8,1));
+		controlPanel = new JPanel();
+		controlPanel.setLayout(new GridLayout(8,1));
 		
 		createAddDonorButton();
 		createAddMissionaryButton();
-		createAddRelationButton();
 		createAddDonationButton();
 		
 		createDeleteDonorButton();
 		createDeleteMissionaryButton();
-		createDeleteRelationButton();
 		createDeleteDonationButton();
 		
-		panel.add(addDonorButton);
-		panel.add(addMissionaryButton);
-		panel.add(addRelationButton);
-		panel.add(addDonationButton);
-		panel.add(deleteDonorButton);
-		panel.add(deleteMissionaryButton);
-		panel.add(deleteRelationButton);
-		panel.add(deleteDonationButton);
-		add(panel, BorderLayout.WEST);
+		donorNameField = new JTextField();
+		controlPanel.add(donorNameField);
+		controlPanel.add(addDonorButton);
+		controlPanel.add(addMissionaryButton);
+		controlPanel.add(addDonationButton);
+		controlPanel.add(deleteDonorButton);
+		controlPanel.add(deleteMissionaryButton);
+		controlPanel.add(deleteDonationButton);
+		add(controlPanel, BorderLayout.WEST);
 	}
 
 	private void createAddDonorButton() 
@@ -211,7 +200,6 @@ public class HomeFrame extends JFrame
 		ActionListener listener = new AddDonorListener();
 		addDonorButton.addActionListener(listener);
 	}
-
 	private void createAddMissionaryButton() 
 	{
 		addMissionaryButton = new JButton("Add new missionary");
@@ -219,38 +207,21 @@ public class HomeFrame extends JFrame
 		{
 			public void actionPerformed(ActionEvent event)
 			{	
-				String missionary_name = JOptionPane.showInputDialog(null, "", "Missionary Name");
-				database.addMissionary(missionary_name); 
-				Missionary missionary = database.getMissionary(missionary_name);
-				missionaryListModel.addElement(missionary);
+				NewMissionaryFrame frame = new NewMissionaryFrame();
+				frame.setVisible(true);
+				
+				String name = frame.getNewMissionaryName();
+				if(name != null)
+				{
+					database.addMissionary(name);
+					Missionary missionary = database.getMissionary(name);
+					missionaryListModel.addElement(missionary);
+				}
 			}
 		}
 		ActionListener listener = new AddMissionaryListener();
 		addMissionaryButton.addActionListener(listener);
 	}
-	
-	private void createAddRelationButton() 
-	{
-		addRelationButton = new JButton("Add new relation");
-		class AddRelationListener implements ActionListener
-		{
-			public void actionPerformed(ActionEvent event)
-			{	
-				JFrame frame = new JFrame("Add Relation");
-				
-				frame.add(new JTextField());
-				frame.add(new JTextField());
-				
-				String donor_name = null;
-				String missionary_name = null;
-				database.addRelation(donor_name, missionary_name);
-			}
-		}
-		ActionListener listener = new AddRelationListener();
-		addRelationButton.addActionListener(listener);
-	}
-
-
 	private void createAddDonationButton() 
 	{
 		addDonationButton = new JButton("Add new donation");
@@ -289,20 +260,6 @@ public class HomeFrame extends JFrame
 		ActionListener listener = new DeleteMissionaryListener();
 		deleteMissionaryButton.addActionListener(listener);
 	}
-
-	private void createDeleteRelationButton() 
-	{
-		deleteRelationButton = new JButton("Delete Relation");
-		class DeleteRelationListener implements ActionListener
-		{
-			public void actionPerformed(ActionEvent event)
-			{	// TODO Auto-generated method stub
-			}
-		}
-		ActionListener listener = new DeleteRelationListener();
-		deleteRelationButton.addActionListener(listener);
-	}
-
 	private void createDeleteDonationButton() {
 		deleteDonationButton = new JButton("Delete donation");
 		class DeleteDonationListener implements ActionListener

@@ -2,25 +2,31 @@ package entities;
 
 public class Donation {
 	int donation_id;
-	int relation_id;
+	int donor_id;
+	int missionary_id;
 	double amount;
 	Date date;
 	
-	public Donation(int d_id, int r_id, double donationAmount, Date d)
+	public Donation(int donation_id, int donor_id, int missionary_id, double donationAmount, Date date)
 	{
-		donation_id = d_id;
-		relation_id = r_id;
+		this.donation_id = donation_id;
+		this.donor_id = donor_id;
+		this.missionary_id = missionary_id;
 		amount = donationAmount;
-		date = d;
+		this.date = date;
 	}
 
 	public int getDonationID()
 	{
 		return donation_id;
 	}
-	public int getRelationID()
+	public int getDonorID()
 	{
-		return relation_id;
+		return donor_id;
+	}
+	public int getMissionaryID()
+	{
+		return missionary_id;
 	}
 	public double getAmount()
 	{
@@ -35,9 +41,13 @@ public class Donation {
 	{
 		donation_id = d_id;
 	}
-	public void setRelationID(int r_id)
+	public void setDonorID(int d_id)
 	{
-		relation_id = r_id;
+		donor_id = d_id;
+	}
+	public void setMissionaryID(int m_id)
+	{
+		missionary_id = m_id;
 	}
 	public void setAmount(double donation_amount)
 	{
@@ -50,6 +60,6 @@ public class Donation {
 	
 	public String toString()
 	{
-		return "" + donation_id + " | " + relation_id + " | " + amount + " | " + date.toString(); 
+		return "" + donation_id + " | " + donor_id + " | " + missionary_id + " | " + amount + " | " + date.toString(); 
 	}
 }
