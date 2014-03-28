@@ -15,57 +15,57 @@ public class DateTest {
 	@Test
 	public void testHasThirtyOneDays() {
 		Date day = new Date(2001,1,1);
-		assertEquals(true,day.hasThirtyOneDays());
+		assertEquals(true,Date.hasThirtyOneDays(day.getMonth()));
 		day = new Date(2001,2,1);
-		assertEquals(false,day.hasThirtyOneDays());
+		assertEquals(false,Date.hasThirtyOneDays(day.getMonth()));
 		day = new Date(2001,3,1);
-		assertEquals(true,day.hasThirtyOneDays());
+		assertEquals(true,Date.hasThirtyOneDays(day.getMonth()));
 		day = new Date(2001,4,1);
-		assertEquals(false,day.hasThirtyOneDays());
+		assertEquals(false,Date.hasThirtyOneDays(day.getMonth()));
 		day = new Date(2001,5,1);
-		assertEquals(true,day.hasThirtyOneDays());
+		assertEquals(true,Date.hasThirtyOneDays(day.getMonth()));
 		day = new Date(2001,6,1);
-		assertEquals(false,day.hasThirtyOneDays());
+		assertEquals(false,Date.hasThirtyOneDays(day.getMonth()));
 		day = new Date(2001,7,1);
-		assertEquals(true,day.hasThirtyOneDays());
+		assertEquals(true,Date.hasThirtyOneDays(day.getMonth()));
 		day = new Date(2001,8,1);
-		assertEquals(true,day.hasThirtyOneDays());
+		assertEquals(true,Date.hasThirtyOneDays(day.getMonth()));
 		day = new Date(2001,9,1);
-		assertEquals(false,day.hasThirtyOneDays());
+		assertEquals(false,Date.hasThirtyOneDays(day.getMonth()));
 		day = new Date(2001,10,1);
-		assertEquals(true,day.hasThirtyOneDays());
+		assertEquals(true,Date.hasThirtyOneDays(day.getMonth()));
 		day = new Date(2001,11,1);
-		assertEquals(false,day.hasThirtyOneDays());
+		assertEquals(false,Date.hasThirtyOneDays(day.getMonth()));
 		day = new Date(2001,12,1);
-		assertEquals(true,day.hasThirtyOneDays());
+		assertEquals(true,Date.hasThirtyOneDays(day.getMonth()));
 	}
 
 	@Test
 	public void testHasThirtyDays() {
 		Date day = new Date(2001,1,1);
-		assertEquals(false,day.hasThirtyDays());
+		assertEquals(false,Date.hasThirtyDays(day.getMonth()));
 		day = new Date(2001,2,1);
-		assertEquals(false,day.hasThirtyDays());
+		assertEquals(false,Date.hasThirtyDays(day.getMonth()));
 		day = new Date(2001,3,1);
-		assertEquals(false,day.hasThirtyDays());
+		assertEquals(false,Date.hasThirtyDays(day.getMonth()));
 		day = new Date(2001,4,1);
-		assertEquals(true,day.hasThirtyDays());
+		assertEquals(true,Date.hasThirtyDays(day.getMonth()));
 		day = new Date(2001,5,1);
-		assertEquals(false,day.hasThirtyDays());
+		assertEquals(false,Date.hasThirtyDays(day.getMonth()));
 		day = new Date(2001,6,1);
-		assertEquals(true,day.hasThirtyDays());
+		assertEquals(true,Date.hasThirtyDays(day.getMonth()));
 		day = new Date(2001,7,1);
-		assertEquals(false,day.hasThirtyDays());
+		assertEquals(false,Date.hasThirtyDays(day.getMonth()));
 		day = new Date(2001,8,1);
-		assertEquals(false,day.hasThirtyDays());
+		assertEquals(false,Date.hasThirtyDays(day.getMonth()));
 		day = new Date(2001,9,1);
-		assertEquals(true,day.hasThirtyDays());
+		assertEquals(true,Date.hasThirtyDays(day.getMonth()));
 		day = new Date(2001,10,1);
-		assertEquals(false,day.hasThirtyDays());
+		assertEquals(false,Date.hasThirtyDays(day.getMonth()));
 		day = new Date(2001,11,1);
-		assertEquals(true,day.hasThirtyDays());
+		assertEquals(true,Date.hasThirtyDays(day.getMonth()));
 		day = new Date(2001,12,1);
-		assertEquals(false,day.hasThirtyDays());
+		assertEquals(false,Date.hasThirtyDays(day.getMonth()));
 	}
 
 	@Test

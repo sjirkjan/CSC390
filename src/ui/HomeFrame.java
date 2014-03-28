@@ -40,6 +40,10 @@ public class HomeFrame extends JFrame
 	JButton deleteDonorButton;
 	JButton deleteMissionaryButton;
 	JButton deleteDonationButton;
+	
+	JButton analyzeDonorButton;
+	JButton analyzeMissionaryButton;
+
 	JPanel controlPanel;
 	JPanel topPanel;
 	JPanel listPanel;
@@ -83,6 +87,9 @@ public class HomeFrame extends JFrame
 		JScrollPane missionaryPane = new JScrollPane(missionaryTab);
 		JScrollPane donationPane = new JScrollPane(donationTab);
 		
+		createAnalyzeDonorButton();
+		createAnalyzeMissionaryButton();
+		
 		panel = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
@@ -112,6 +119,12 @@ public class HomeFrame extends JFrame
 		c.gridx = 2;
 		panel.add(donationPane, c);
 		
+		c.ipady = 15;
+		c.gridy = 2;
+		c.gridx = 0;
+		panel.add(analyzeDonorButton,c);
+		c.gridx = 1;
+		panel.add(analyzeMissionaryButton,c);
 		add(panel,BorderLayout.CENTER);
 		
 	}
@@ -203,7 +216,7 @@ public class HomeFrame extends JFrame
 		c.gridy = 7;
 		controlPanel.add(donationAmountField, c);
 		c.gridy = 8;
-		controlPanel.add(new JLabel("Date (dd-mm-yyyy)"),c);
+		controlPanel.add(new JLabel("Date (yyyy-mm-dd)"),c);
 		c.gridy = 9;
 		controlPanel.add(donationDateField, c);
 		c.gridy = 10;
@@ -279,8 +292,6 @@ public class HomeFrame extends JFrame
 					database.addDonation(amount, donor_id, missionary_id, date);
 					Donation donation = database.getDonation(amount, donor_id, missionary_id, date);
 					donationListModel.addElement(donation);
-					donationAmountField.setText("");
-					donationDateField.setText("");
 				}
 			}
 		}
@@ -312,7 +323,8 @@ public class HomeFrame extends JFrame
 			{
 				int index = missionaryList.getSelectedIndex();
 				database.removeMissionary(missionaryListModel.get(index).getMissionaryName());
-				missionaryListModel.remove(index);			}
+				missionaryListModel.remove(index);			
+			}
 		}
 		ActionListener listener = new DeleteMissionaryListener();
 		deleteMissionaryButton.addActionListener(listener);
@@ -322,11 +334,43 @@ public class HomeFrame extends JFrame
 		class DeleteDonationListener implements ActionListener
 		{
 			public void actionPerformed(ActionEvent event)
-			{	// TODO Auto-generated method stub
+			{	
+				int index = donationList.getSelectedIndex();
+				database.removeDonation(donationListModel.get(index).getDonationID());
+				donationListModel.remove(index);			
 			}
 		}
 		ActionListener listener = new DeleteDonationListener();
 		deleteDonationButton.addActionListener(listener);
 	}
 	
+	private void createAnalyzeDonorButton(){
+		analyzeDonorButton = new JButton("Analyze");
+		class AnalyzeDonorListener implements ActionListener
+		{
+			public void actionPerformed(ActionEvent event)
+			{
+				int index = donorList.getSelectedIndex();
+				Donor donor = donorListModel.get(index);
+				DonorAnalysisWindow daw = new DonorAnalysisWindow(donor, database);
+			}
+		}
+		ActionListener listener = new AnalyzeDonorListener();
+		analyzeDonorButton.addActionListener(listener);
+	}
+	private void createAnalyzeMissionaryButton(){
+		analyzeMissionaryButton = new JButton("Analyze");
+		class AnalyzeMissionaryListener implements ActionListener
+		{
+			public void actionPerformed(ActionEvent event)
+			{
+				int index = missionaryList.getSelectedIndex();
+				Missionary missionary = missionaryListModel.get(index);
+				//MissionaryAnalysisWindow maw = new MissionaryAnalysisWindow(missionary);
+			}
+		}
+		ActionListener listener = new AnalyzeMissionaryListener();
+		analyzeMissionaryButton.addActionListener(listener);
+		
+	}
 }

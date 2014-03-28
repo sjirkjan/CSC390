@@ -10,6 +10,13 @@ public class Date {
 	private String date = null;
 	private int year, month, day;
 
+	public static void main(String[] args)
+	{
+		Date first = new Date(2009,12,31);
+		System.out.println(first.days_since_2000());
+		Date notFirst = new Date(2009,12,30);
+		System.out.println(notFirst.days_since_2000());
+	}
 	public Date(int year, int month, int day)
 	{
 		this.year = year;
@@ -20,13 +27,37 @@ public class Date {
 		if(day >=1)
 			if(day <= 28)
 				this.day = day;
-			else if(hasThirtyDays())
+			else if(hasThirtyDays(month))
 				this.day=day;
-			else if(hasThirtyOneDays())
+			else if(hasThirtyOneDays(month))
 				this.day=day;
-		date=toString();
+	//	date=toString();
 	}
-	boolean hasThirtyOneDays() {
+	public void setYear(int y)
+	{
+		year =y;
+	}
+	public void setMonth(int m)
+	{
+		month=m;
+	}
+	public void setDay(int d)
+	{
+		day = d;
+	}
+	public int getYear()
+	{
+		return year;
+	}
+	public int getMonth()
+	{
+		return month;
+	}
+	public int getDay()
+	{
+		return day;
+	}
+	public static boolean hasThirtyOneDays(int month) {
 		switch(month)
 		{
 			case JANUARY:
@@ -41,7 +72,7 @@ public class Date {
 		}
 	}
 	
-	boolean hasThirtyDays() 
+	public static boolean hasThirtyDays(int month) 
 	{
 		switch(month)
 		{
@@ -62,5 +93,22 @@ public class Date {
 	{
 		String ss[] = s.split("-");
 		return new Date(Integer.parseInt(ss[0]),Integer.parseInt(ss[1]),Integer.parseInt(ss[2]));
+	}
+	public int days_since_2000()
+	{
+		int n = (year - 2000)*365;
+		for(int i=1; i<month;i++)
+		{
+			if(hasThirtyOneDays(i))
+				n+=31;
+			else if(hasThirtyDays(i))
+				n+=30;
+			else
+				n+=28;
+				
+		}
+		
+		n+=day;
+		return n;
 	}
 }
