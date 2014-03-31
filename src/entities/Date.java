@@ -13,9 +13,9 @@ public class Date {
 	public static void main(String[] args)
 	{
 		Date first = new Date(2009,12,31);
-		System.out.println(first.days_since_2000());
+		System.out.println(first.days_since_2010());
 		Date notFirst = new Date(2009,12,30);
-		System.out.println(notFirst.days_since_2000());
+		System.out.println(notFirst.days_since_2010());
 	}
 	public Date(int year, int month, int day)
 	{
@@ -94,9 +94,9 @@ public class Date {
 		String ss[] = s.split("-");
 		return new Date(Integer.parseInt(ss[0]),Integer.parseInt(ss[1]),Integer.parseInt(ss[2]));
 	}
-	public int days_since_2000()
+	public int days_since_2010()
 	{
-		int n = (year - 2000)*365;
+		int n = (year - 2010)*365;
 		for(int i=1; i<month;i++)
 		{
 			if(hasThirtyOneDays(i))

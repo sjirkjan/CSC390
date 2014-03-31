@@ -30,8 +30,8 @@ public class DonorData {
 
 			s = db.conn.createStatement(); 
 			
-			rs = s.executeQuery("SELECT	* FROM donation,donor " +
-	         						"WHERE donor.donor_id = " + donor_id);
+			rs = s.executeQuery("SELECT	* FROM donation " +
+	         						"WHERE donation.donor_id = " + donor_id);
 
 			while(rs.next())
 			{
@@ -49,39 +49,5 @@ public class DonorData {
 	 		DBBuilder.printSQLException(sqle);
 	 	}
 		return donationList;
-	}
-	
-
-	//Selects transactions from donor to specific missionary
-	public static void donor_missionaryContributionTable(String donor, String missionary)
-	{
-		
-		try
-		{
-			s = db.conn.createStatement(); 
-			System.out.println("FLAG 1");
-			rs = s.executeQuery("	SELECT 	donation.donation_id,donation.donation_date,donation.amount,donation.relationship_id,"+
-									"		relation.donor_id,relation.relation_id,"+
-									"		donor.donor_id,donor.name, " +
-									"		missionary.missionary_id,missionary.name AS mname "+
-	         						"FROM donation,relation,donor,missionary " +
-	         						"WHERE donor.name = \'" + donor + "\' "+
-	         							"AND relation.donor_id =  donor.donor_id " +
-	         							"AND relation.missionary_id =  missionary.missionary_id " +
-	         							"AND donation.relationship_id = relation.relation_id " +
-	         							"AND missionary.name = \'" + missionary + "\' ORDER BY donation.donation_date");
-
-			while(rs.next())
-			{
-				double amount = rs.getDouble("amount");
-				String mname = rs.getString("mname");
-				String date = rs.getString("donation_date");
-				//String name = rs.getString("name");
-				System.out.println(amount+" on " + date + " to " + mname);
-			}
-	 	}catch(SQLException sqle)
-	 	{
-	 		DBBuilder.printSQLException(sqle);
-	 	}
 	}
 }

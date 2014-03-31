@@ -30,25 +30,22 @@ public class DonorAnalysisWindow {
 		Donor donor = new Donor(105,"BBB");
 		donationList = DonorData.donorAllContributionsTable(donor, db);
 		
-		
+		DonorAnalysisWindow daw = new DonorAnalysisWindow(db.getDonor("76590"), db);
+		db.disconnect();
 		pointList = bubbleSort(donationList);
 	}
 	public DonorAnalysisWindow(Donor donor, DBBuilder db)
 	{
 		JFrame frame = new JFrame();
-		frame.setSize(300,300);
+		frame.setSize(1200,500);
 		
 		frame.setVisible(true);
 		donationList = DonorData.donorAllContributionsTable(donor, db);
 		pointList = bubbleSort(donationList);
+		//System.out.println(pointList.toString());
 		Graph2 graph = new Graph2(pointList);
 		graph.setVisible(true);
 		frame.add(graph);
-		for(Donation d : donationList)
-		{
-			System.out.println(d.toString());
-		}
-
 	}
 		
 	public static ArrayList<Point2D> bubbleSort(ArrayList<Donation> donationList)
@@ -60,7 +57,7 @@ public class DonorAnalysisWindow {
 		
 		for(Donation d : donationList)
 		{
-			pointList.add(new Point2D.Double(d.getDate().days_since_2000(),d.getAmount()));
+			pointList.add(new Point2D.Double(d.getDate().days_since_2010(),d.getAmount()));
 		}
 		
 		while(pointList.size() > 0)
@@ -77,10 +74,12 @@ public class DonorAnalysisWindow {
 		double ySum = 0;
 		for(Point2D p : list)
 		{
-			ySum += p.getY();
-			donationSumList.add(new Point2D.Double(p.getX(),ySum));
+			if(p.getY()<=1000.0)
+			{
+				ySum += p.getY();
+				donationSumList.add(new Point2D.Double(p.getX(),ySum));
+			}
 		}
-		
 		
 		return donationSumList;
 	}

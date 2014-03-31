@@ -81,5 +81,4 @@ public class DonationTest {
 		
 		assertEquals(d.getDate().toString(),(new Date(2001,2,2)).toString());
 	}
-
 }
