@@ -1,24 +1,21 @@
 package ui;
 
-
-import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-
 import javax.swing.JFrame;
-
 import db.DBBuilder;
 import db.DonorData;
-
 import entities.Donation;
 import entities.Donor;
 
 public class DonorAnalysisWindow {
 
 	ArrayList<Donation> donationList = new ArrayList<Donation>();
-	ArrayList<Point2D> pointList ;//= new ArrayList<Point>();
+	ArrayList<Point2D> pointList;
+	ArrayList<Point2D> bigPointList;
+	private final int FRAME_WIDTH = 1200;
+	private final int FRAME_HEIGHT = 500;
+	private final double LARGE_DONATION = 1000;
 
 	public static void main(String[] args)
 	{
@@ -37,22 +34,24 @@ public class DonorAnalysisWindow {
 	public DonorAnalysisWindow(Donor donor, DBBuilder db)
 	{
 		JFrame frame = new JFrame();
-		frame.setSize(1200,500);
+		frame.setSize(FRAME_WIDTH,FRAME_HEIGHT);
 		
-		frame.setVisible(true);
-		donationList = DonorData.donorAllContributionsTable(donor, db);
-		pointList = bubbleSort(donationList);
-		//System.out.println(pointList.toString());
-		Graph2 graph = new Graph2(pointList);
+		ArrayList<Donation> donationList = DonorData.donorAllContributionsTable(donor, db);
+		
+		pointList = sumList(bubbleSort(donationList));
+		bigPointList = bigList(bubbleSort(donationList));
+
+		Graph2 graph = new Graph2(pointList, bigPointList);
 		graph.setVisible(true);
 		frame.add(graph);
+		frame.setVisible(true);
 	}
 		
 	public static ArrayList<Point2D> bubbleSort(ArrayList<Donation> donationList)
 	{
 		ArrayList<Point2D> pointList = new ArrayList<Point2D>();
 		ArrayList<Point2D> list = new ArrayList<Point2D>();
-		ArrayList<Point2D> donationSumList = new ArrayList<Point2D>();
+
 		int index;
 		
 		for(Donation d : donationList)
@@ -70,17 +69,37 @@ public class DonorAnalysisWindow {
 			list.add(pointList.get(index));
 			pointList.remove(index);
 		}
-		
+		return list;
+	}
+	
+	public ArrayList<Point2D> sumList(ArrayList<Point2D> donationList)
+	{
 		double ySum = 0;
-		for(Point2D p : list)
+		ArrayList<Point2D> donationSumList = new ArrayList<Point2D>();
+		
+		for(Point2D p : donationList)
 		{
-			if(p.getY()<=1000.0)
+			if(p.getY()<= LARGE_DONATION)
 			{
 				ySum += p.getY();
 				donationSumList.add(new Point2D.Double(p.getX(),ySum));
 			}
 		}
-		
 		return donationSumList;
+	}
+	
+	public ArrayList<Point2D> bigList(ArrayList<Point2D> donationList)
+	{
+		ArrayList<Point2D> bigList = new ArrayList<Point2D>();
+		
+		for(Point2D p : donationList)
+		{
+			if(p.getY() > LARGE_DONATION)
+			{
+				
+				bigList.add(new Point2D.Double(p.getX(),p.getY()));
+			}
+		}
+		return bigList;
 	}
 }

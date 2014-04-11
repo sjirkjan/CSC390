@@ -36,8 +36,6 @@ public class DBBuilder{
 	 
 	 public boolean connect() 
 	 {
-		 System.out.println("DBBuilder starting in " + framework + " mode");
-
 	     try
 	     {
 	         Properties props = new Properties(); // connection properties
@@ -46,7 +44,6 @@ public class DBBuilder{
 	
 	         String dbName = "DB"; // the name of the database
 	         conn = DriverManager.getConnection(protocol+dbName,props); // Database already exists.
-	         System.out.println("Connected to database 2 " + dbName);
 	     }catch (SQLException sqle)
 	     {
 	         printSQLException(sqle);
@@ -179,7 +176,8 @@ public class DBBuilder{
 		 for(Missionary i: missionaries)
 			 System.out.println(i.toString());
 	 }
-	 public Missionary getMissionary(String name)
+	 
+	 public Missionary getMissionaryID(String name)
 	 {
 		 Missionary missionary;
 		 int m_id = 0;

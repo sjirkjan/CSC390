@@ -1,7 +1,5 @@
 package entities;
 
-import java.util.Comparator;
-
 public class Donation {
 	int donation_id;
 	int donor_id;

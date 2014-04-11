@@ -42,7 +42,7 @@ public class HomeFrame extends JFrame
 	JButton deleteDonationButton;
 	
 	JButton analyzeDonorButton;
-	JButton analyzeMissionaryButton;
+	JButton analyzeAllDonorsButton;
 
 	JPanel controlPanel;
 	JPanel topPanel;
@@ -88,8 +88,7 @@ public class HomeFrame extends JFrame
 		JScrollPane donationPane = new JScrollPane(donationTab);
 		
 		createAnalyzeDonorButton();
-		createAnalyzeMissionaryButton();
-		
+				
 		panel = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
@@ -123,8 +122,6 @@ public class HomeFrame extends JFrame
 		c.gridy = 2;
 		c.gridx = 0;
 		panel.add(analyzeDonorButton,c);
-		c.gridx = 1;
-		panel.add(analyzeMissionaryButton,c);
 		add(panel,BorderLayout.CENTER);
 		
 	}
@@ -262,7 +259,7 @@ public class HomeFrame extends JFrame
 				if(missionaryName.length() > 0)
 				{
 					database.addMissionary(missionaryName);
-					Missionary missionary = database.getMissionary(missionaryName);
+					Missionary missionary = database.getMissionaryID(missionaryName);
 					missionaryListModel.addElement(missionary);
 					missionaryNameField.setText("");
 				}
@@ -357,20 +354,5 @@ public class HomeFrame extends JFrame
 		}
 		ActionListener listener = new AnalyzeDonorListener();
 		analyzeDonorButton.addActionListener(listener);
-	}
-	private void createAnalyzeMissionaryButton(){
-		analyzeMissionaryButton = new JButton("Analyze");
-		class AnalyzeMissionaryListener implements ActionListener
-		{
-			public void actionPerformed(ActionEvent event)
-			{
-				int index = missionaryList.getSelectedIndex();
-				Missionary missionary = missionaryListModel.get(index);
-				//MissionaryAnalysisWindow maw = new MissionaryAnalysisWindow(missionary);
-			}
-		}
-		ActionListener listener = new AnalyzeMissionaryListener();
-		analyzeMissionaryButton.addActionListener(listener);
-		
 	}
 }

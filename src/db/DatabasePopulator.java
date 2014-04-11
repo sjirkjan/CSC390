@@ -2,6 +2,8 @@ package db;
 
 import entities.Date;
 
+
+//This Class adds random data to the program. I now have real data. 
 public class DatabasePopulator {
 
 	public static DBBuilder db;
@@ -9,7 +11,6 @@ public class DatabasePopulator {
 	public static void main(String[] args)
 	{
 		db = new DBBuilder();
-//		db.DBSetup();
 		String[] donors={"Elwood Eyman","Earlie Ephraim","Tianna Toribio"," Dorinda Dave","Natalya Norden",
 				"Lillian Leland","Melania Madrid","Bryant Birchard","Merrilee Manriquez","Keli Knighton",
 				"Buford Bengtson","Shiloh Stlawrence","Kendrick Karas","Peggie Pinedo","Mendy Matney",
